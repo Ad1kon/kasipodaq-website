@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Федерация Профсоюзов Республики Казахстан{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #FCD34D;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kasip-blue': '#1E3A8A',
+                        'kasip-light-blue': '#3B82F6',
+                        'kasip-yellow': '#FCD34D',
+                    }
+                }
+            }
+        }
+    </script>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation Header -->
+    <header class="bg-kasip-blue text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center py-2 text-sm border-b border-blue-700">
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-kasip-yellow transition">РУС</a>
+                    <a href="#" class="hover:text-kasip-yellow transition">ҚАЗ</a>
+                    <a href="#" class="hover:text-kasip-yellow transition">ENG</a>
+                </div>
+                <div class="hidden md:flex space-x-4 text-xs">
+                    <span>📞 +7 7172 24-82-78</span>
+                    <span>✉️ kense@kasipodaq.kz</span>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="py-4">
+                <div class="flex justify-between items-center">
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-white rounded-full p-2">
+                            <svg class="w-10 h-10 text-kasip-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold">ФЕДЕРАЦИЯ ПРОФСОЮЗОВ</h1>
+                            <p class="text-xs text-gray-300">Республики Казахстан</p>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <div class="hidden lg:flex space-x-6">
+                        <a href="{% url 'news:index' %}" class="nav-link hover:text-kasip-yellow">Главная</a>
+                        <a href="{% url 'news:about' %}" class="nav-link hover:text-kasip-yellow">О Федерации</a>
+                        <a href="{% url 'news:index' %}#news" class="nav-link hover:text-kasip-yellow">Новости</a>
+                        <a href="{% url 'news:activities' %}" class="nav-link hover:text-kasip-yellow">Деятельность</a>
+                        <a href="{% url 'news:contacts' %}" class="nav-link hover:text-kasip-yellow">Контакты</a>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="lg:hidden" onclick="toggleMobileMenu()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div id="mobileMenu" class="hidden lg:hidden mt-4 pb-4">
+                    <a href="{% url 'news:index' %}" class="block py-2 hover:text-kasip-yellow">Главная</a>
+                    <a href="{% url 'news:about' %}" class="block py-2 hover:text-kasip-yellow">О Федерации</a>
+                    <a href="{% url 'news:index' %}#news" class="block py-2 hover:text-kasip-yellow">Новости</a>
+                    <a href="{% url 'news:activities' %}" class="block py-2 hover:text-kasip-yellow">Деятельность</a>
+                    <a href="{% url 'news:contacts' %}" class="block py-2 hover:text-kasip-yellow">Контакты</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-kasip-blue text-white mt-16">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- About Section -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">О Федерации</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{% url 'news:about' %}" class="hover:text-kasip-yellow transition">История</a></li>
+                        <li><a href="{% url 'news:about' %}" class="hover:text-kasip-yellow transition">Устав</a></li>
+                        <li><a href="{% url 'news:about' %}" class="hover:text-kasip-yellow transition">Руководство</a>
+                        </li>
+                        <li><a href="{% url 'news:about' %}" class="hover:text-kasip-yellow transition">Органы
+                                управления</a></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Быстрые ссылки</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-kasip-yellow transition">Вступить в профсоюз</a></li>
+                        <li><a href="{% url 'news:contacts' %}" class="hover:text-kasip-yellow transition">Получить
+                                консультацию</a></li>
+                        <li><a href="#" class="hover:text-kasip-yellow transition">Правовая база</a></li>
+                        <li><a href="/admin/" class="hover:text-kasip-yellow transition">Вход для администратора</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Контакты</h3>
+                    <div class="space-y-2 text-sm">
+                        <p>📍 Республика Казахстан</p>
+                        <p>г. Астана, пр. Абая 38</p>
+                        <p>📞 Приёмная: +7 7172 24-82-78</p>
+                        <p>✉️ kense@kasipodaq.kz</p>
+                        <div class="flex space-x-4 mt-4">
+                            <a href="#" class="hover:text-kasip-yellow transition">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                </svg>
+                            </a>
+                            <a href="#" class="hover:text-kasip-yellow transition">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-blue-700 mt-8 pt-8 text-center text-sm">
+                <p>&copy; 2024 Федерация Профсоюзов Республики Казахстан. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
