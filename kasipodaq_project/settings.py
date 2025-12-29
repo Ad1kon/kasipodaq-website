@@ -4,6 +4,9 @@ Django settings for kasipodaq_project project.
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,12 +16,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-your-secret-key-change-this-in-production'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-your-secret-key-change-this-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,32 +70,32 @@ TEMPLATES = [
 WSGI_APPLICATION = 'kasipodaq_project.wsgi.application'
 
 
-# Database - Supabase PostgreSQL Configuration
-# IMPORTANT: Replace these values with your actual Supabase credentials
+# Database - Supabase PostgreSQL Configuration & SQLite
+# IMPORTANT: Replace these values with your actual Supabase credentials for production
 # You can find these in your Supabase project settings under Database
 
-# Uncomment and configure Supabase when ready:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',  # Your Supabase database name
-#         'USER': 'postgres',  # Your Supabase database user
-#         'PASSWORD': 'your-supabase-password',  # Your Supabase password
-#         'HOST': 'db.xxxxxxxxxxxxx.supabase.co',  # Your Supabase host
-#         'PORT': '5432',  # Default PostgreSQL port
-#         'OPTIONS': {
-#             'sslmode': 'require',  # Supabase requires SSL
-#         },
-#     }
-# }
-
-# Using SQLite for local development:
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.getenv('DATABASE_ENGINE') == 'postgresql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME', 'postgres'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'your-supabase-password'),
+            'HOST': os.getenv('DB_HOST', 'db.xxxxxxxxxxxxx.supabase.co'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+            'OPTIONS': {
+                'sslmode': 'require',
+            },
+        }
     }
-}
+else:
+    # Using SQLite for local development:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
